@@ -1,0 +1,40 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+}
+.container{
+    flex-shrink: 0;
+   max-width: 300px; 
+   border: 2px solid black;
+   border-radius: 5px;
+   padding: 20px;
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+}
+.display{
+    height: 100px;
+    padding: 20px;
+    border: 2px solid black;
+    background-color: gray;
+    border-radius: 5px;
+}
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.buttons>button{
+    flex-basis: 67px;
+    padding: 20px;
+}
+.big-result{
+    font-size: 22px;
+
+}
+p{
+    text-align: end;
+}
