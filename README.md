@@ -24,3 +24,5 @@ Performs basic arithmetic operations including addition, subtraction, multiplica
 - **JavaScript (Vanilla)** for logic and interactivity
 
 ---
+
+🔗 [Live Demo](https://thejas2246.github.io/calculator/)
