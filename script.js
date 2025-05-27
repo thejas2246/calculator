@@ -160,7 +160,7 @@ function clearNumbers() {
       leftSide.splice(leftSide.length - 1, 1);
       leftSide = leftSide.join("");
     } else {
-      if (leftSide.length == 1) {
+      if (String(leftSide).length == 1) {
         leftSide = 0;
       }
     }
