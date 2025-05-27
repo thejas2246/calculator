@@ -2,6 +2,7 @@ const operators = document.querySelectorAll(".operator");
 const operand = document.querySelectorAll(".operand");
 const equalSign = document.querySelector(".equals");
 const bigResult = document.querySelector(".big-result");
+const clearButton = document.querySelector(".clear");
 bigResult.textContent = 0;
 let leftSide = 0;
 let rightSide = "";
@@ -61,7 +62,7 @@ operators.forEach((item) => {
       isOperating = true;
       middle = value;
     }
-    displayOnScreen(leftSide, middle, rightSide);
+    displayOnScreen();
   });
 });
 
@@ -74,17 +75,32 @@ operand.forEach((item) => {
       } else {
         leftSide += value;
       }
-      displayOnScreen(leftSide, middle, rightSide);
+      displayOnScreen();
     } else {
       rightSide += value;
-      displayOnScreen(leftSide, middle, rightSide);
+      displayOnScreen();
     }
   });
 });
 
-equalSign.addEventListener("click", () => {});
+equalSign.addEventListener("click", () => {
+  leftSide = operate(leftSide, middle, rightSide);
+  isOperating = false;
+  rightSide = "";
+  middle = "";
+  displayOnScreen();
+});
 
-function displayOnScreen(firstNumber, operator, secondNumber) {
-  console.log(firstNumber + " " + operator + " " + secondNumber);
-  bigResult.textContent = firstNumber + operator + secondNumber;
+clearButton.addEventListener("click", clearScreen);
+
+function displayOnScreen() {
+  bigResult.textContent = leftSide + middle + rightSide;
+}
+
+function clearScreen() {
+  leftSide = 0;
+  middle = "";
+  rightSide = "";
+  isOperating = false;
+  displayOnScreen();
 }
