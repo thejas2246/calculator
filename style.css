@@ -38,3 +38,6 @@ body{
 p{
     text-align: end;
 }
+.equals{
+    flex: 2;
+}

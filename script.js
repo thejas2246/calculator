@@ -17,10 +17,17 @@ function subtract(a, b) {
 }
 
 function multiply(a, b) {
+  if (b == "") {
+    b = 1;
+  }
   return roundNumber(Number(a) * Number(b));
 }
 
 function divide(a, b) {
+  if (b == "") {
+    b = 1;
+  }
+
   return roundNumber(Number(a) / Number(b));
 }
 function modulo(a, b) {
@@ -46,45 +53,55 @@ function operate(firstNumber, operator, secondNumber) {
     return "invalid";
   }
 }
-
-operators.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    let value = e.target.textContent;
-    if (isOperating) {
-      if (rightSide == "") {
-        middle = value;
-      } else {
-        leftSide = operate(leftSide, middle, rightSide);
-        rightSide = "";
-        middle = value;
-      }
+function operandConditions(e) {
+  let value = e.target.textContent;
+  if (!isOperating) {
+    if (leftSide == 0) {
+      leftSide = value;
     } else {
-      isOperating = true;
-      middle = value;
+      leftSide += value;
     }
     displayOnScreen();
-  });
+  } else {
+    rightSide += value;
+    displayOnScreen();
+  }
+}
+function operatorConditon(e) {
+  let value = e.target.textContent;
+  if (isOperating) {
+    if (rightSide == "") {
+      middle = value;
+    } else {
+      leftSide = operate(leftSide, middle, rightSide);
+      rightSide = "";
+      middle = value;
+    }
+  } else {
+    isOperating = true;
+    middle = value;
+  }
+  displayOnScreen();
+}
+
+operators.forEach((item) => {
+  item.addEventListener("click", operatorConditon);
 });
 
 operand.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    let value = e.target.textContent;
-    if (!isOperating) {
-      if (leftSide == 0) {
-        leftSide = value;
-      } else {
-        leftSide += value;
-      }
-      displayOnScreen();
-    } else {
-      rightSide += value;
-      displayOnScreen();
-    }
-  });
+  item.addEventListener("click", operandConditions);
 });
 
 equalSign.addEventListener("click", () => {
   leftSide = operate(leftSide, middle, rightSide);
+  if (leftSide == "Infinity") {
+    operand.forEach((item) => {
+      item.removeEventListener("click", operandConditions);
+    });
+    operators.forEach((item) => {
+      item.removeEventListener("click", operatorConditon);
+    });
+  }
   isOperating = false;
   rightSide = "";
   middle = "";
@@ -102,5 +119,11 @@ function clearScreen() {
   middle = "";
   rightSide = "";
   isOperating = false;
+  operand.forEach((item) => {
+    item.addEventListener("click", operandConditions);
+  });
   displayOnScreen();
+  operators.forEach((item) => {
+    item.addEventListener("click", operatorConditon);
+  });
 }
