@@ -3,6 +3,10 @@ const operand = document.querySelectorAll(".operand");
 const equalSign = document.querySelector(".equals");
 const bigResult = document.querySelector(".big-result");
 const clearButton = document.querySelector(".clear");
+const clearNumber = document.querySelector(".clear-character");
+const smallDisplay = document.querySelector(".small-result");
+let result = 0;
+smallDisplay.textContent = 0;
 bigResult.textContent = 0;
 let leftSide = 0;
 let rightSide = "";
@@ -62,8 +66,11 @@ function operandConditions(e) {
       leftSide += value;
     }
     displayOnScreen();
+    setSmallDisplay();
   } else {
     rightSide += value;
+    result = operate(leftSide, middle, rightSide);
+    setSmallDisplay(result);
     displayOnScreen();
   }
 }
@@ -91,8 +98,7 @@ operators.forEach((item) => {
 operand.forEach((item) => {
   item.addEventListener("click", operandConditions);
 });
-
-equalSign.addEventListener("click", () => {
+function equalSignCondition(e) {
   leftSide = operate(leftSide, middle, rightSide);
   if (leftSide == "Infinity") {
     operand.forEach((item) => {
@@ -101,12 +107,15 @@ equalSign.addEventListener("click", () => {
     operators.forEach((item) => {
       item.removeEventListener("click", operatorConditon);
     });
+    equalSign.removeEventListener("click", equalSignCondition);
   }
   isOperating = false;
   rightSide = "";
   middle = "";
   displayOnScreen();
-});
+  setSmallDisplay();
+}
+equalSign.addEventListener("click", equalSignCondition);
 
 clearButton.addEventListener("click", clearScreen);
 
@@ -123,7 +132,49 @@ function clearScreen() {
     item.addEventListener("click", operandConditions);
   });
   displayOnScreen();
+  setSmallDisplay(leftSide);
   operators.forEach((item) => {
     item.addEventListener("click", operatorConditon);
   });
+}
+
+clearNumber.addEventListener("click", clearNumbers);
+
+function clearNumbers() {
+  if (isOperating) {
+    if (rightSide == "") {
+      middle = "";
+      isOperating = false;
+      setSmallDisplay(leftSide);
+    } else {
+      rightSide = rightSide.split("");
+      rightSide.splice(rightSide.length - 1, 1);
+      rightSide = rightSide.join("");
+      result = operate(leftSide, middle, rightSide);
+      setSmallDisplay(result);
+    }
+    displayOnScreen();
+  } else {
+    if (String(leftSide).length > 1) {
+      leftSide = String(leftSide).split("");
+      leftSide.splice(leftSide.length - 1, 1);
+      leftSide = leftSide.join("");
+    } else {
+      if (leftSide.length == 1) {
+        leftSide = 0;
+      }
+    }
+    displayOnScreen();
+    setSmallDisplay(leftSide);
+  }
+}
+
+function setSmallDisplay(result = "") {
+  if (result === "") {
+    smallDisplay.textContent = leftSide + middle;
+  } else if (result == 0) {
+    smallDisplay.textContent = result;
+  } else {
+    smallDisplay.textContent = result;
+  }
 }
